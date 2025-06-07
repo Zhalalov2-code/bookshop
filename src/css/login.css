@@ -1,0 +1,25 @@
+.body-login{
+    padding: 20px;
+}
+
+.content-section{
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+.title-login{
+    text-align: center;
+}
+
+.img-login{
+    width: 200px;
+    margin-left: 100px;
+}
+
+.link{
+    text-decoration: none;
+}
+
+.link:hover{
+    color: red;
+}

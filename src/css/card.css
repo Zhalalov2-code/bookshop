@@ -1,0 +1,89 @@
+.book-card {
+  width: 240px;
+  text-align: left;
+  padding: 22px;
+  position: relative;
+  border: 0px;
+  transition: transform 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-8px);
+  border: 0px;
+  box-shadow: 0px 0px 0px 0px white;
+}
+
+.book-card-cover {
+  height: 300px;
+  object-fit: cover;
+  border: solid 1px silver;
+  background-color: #f0f0f0;
+  box-shadow: 0px 0px 10px 1px gray;
+}
+
+.book-card-cover.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.book-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+  height: 38px;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.book-card-author {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 4px;
+  height: 30px;
+  overflow: hidden;
+}
+
+.book-card-meta {
+  height: 30px;
+  font-size: 12px;
+  color: #555;
+}
+
+.book-card-price {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.old-price {
+  margin-right: 6px;
+  font-size: 13px;
+  color: #999;
+}
+
+.current-price {
+  font-size: 14px;
+  color: #1890ff;
+}
+
+.book-card-discount {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: crimson;
+  color: white;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.buy-button {
+  background-color: green;
+  color: white;
+  margin-left: 1px;
+}

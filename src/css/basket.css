@@ -1,0 +1,29 @@
+.body-basket {
+    padding: 20px;
+}
+
+.basket-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.basket-item .left {
+    display: flex;
+    align-items: center;
+}
+
+.basket-item img {
+    width: 60px;
+    height: auto;
+    margin-right: 16px;
+    border-radius: 8px;
+}
+
+.spin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
