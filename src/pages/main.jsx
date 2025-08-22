@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Input, Typography, message, Spin } from 'antd';
-import Navbar from '../components/navbar';
 import '../css/main.css';
-import Card from '../components/card';
+import BookCard from '../components/card';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
@@ -29,12 +28,15 @@ const Home = () => {
                 },
             });
             if (response.status === 200) {
-                setPopular(response.data.items);
-                console.log(response.data.items);
+                setPopular(response.data.items || []);
             }
         } catch (err) {
             console.error('Ошибка при загрузке книг:', err);
-            message.error('Не удалось загрузить книги');
+            if (err.response?.status === 429) {
+                message.error('Превышен лимит запросов. Попробуйте позже.');
+            } else {
+                message.error('Не удалось загрузить книги');
+            }
         } finally {
             setLoading(false);
         }
@@ -53,21 +55,58 @@ const Home = () => {
         dots: false,
         infinite: true,
         speed: 1000,
-        slidesToShow: 6,
-        slidesToScroll: 2,
+        slidesToShow: 5,
+        slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
         responsive: [
             {
-                breakpoint: 1024,
+                breakpoint: 1600,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 5,
+                    slidesToScroll: 1,
                 },
             },
             {
-                breakpoint: 600,
+                breakpoint: 1400,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 576,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 480,
                 settings: {
                     slidesToShow: 1,
+                    slidesToScroll: 1,
                 },
             },
         ],
@@ -75,7 +114,6 @@ const Home = () => {
 
     return (
         <div className='body-main'>
-            <Navbar />
             <div className="title-section">
                 <Title className="title" level={2}>
                     <img className='embel' src={Embel} alt="" /> <br />Добро пожаловать в BookShop!
@@ -96,7 +134,7 @@ const Home = () => {
                     <Slider {...sliderSettings}>
                         {popular.map((book) => (
                             <div key={book.id} style={{ padding: '0 10px' }}>
-                                <Card
+                                <BookCard
                                     id={book.id}
                                     title={book.volumeInfo.title}
                                     authors={book.volumeInfo.authors}

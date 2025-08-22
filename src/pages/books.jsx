@@ -1,12 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import axios from 'axios';
 import { Row, Col, Typography, Spin, message, Select, Pagination, Button } from 'antd';
-import Navbar from '../components/navbar';
-import Card from '../components/card';
+import BookCard from '../components/card';
 import { useLocation, useNavigate } from 'react-router-dom';
+import '../css/books.css';
+import { 
+    BookOutlined, 
+    HeartOutlined, 
+    RocketOutlined, 
+    TrophyOutlined, 
+    StarOutlined,
+    HomeOutlined
+} from '@ant-design/icons';
 
 const { Title } = Typography;
 const { Option } = Select;
+
+
 
 const Books = () => {
     const location = useLocation();
@@ -14,7 +24,7 @@ const Books = () => {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
-    const [sortType, setSortType] = useState('default')
+    const [sortType, setSortType] = useState('default');
     const navigate = useNavigate();
 
     const queryParams = new URLSearchParams(location.search);
@@ -22,18 +32,17 @@ const Books = () => {
     const category = queryParams.get('category');
     const finalQuery = querySearch || category || 'бестселлеры';
 
-
-    const maxResults = 18;
+    const maxResults = 16;
     const categories = [
-        { label: 'Фантастика', value: 'fantasy' },
-        { label: 'Бизнес', value: 'business' },
-        { label: 'История', value: 'history' },
-        { label: 'Роман', value: 'romance' },
-        { label: 'Детские', value: 'kids' },
+        { label: 'Фантастика', value: 'fantasy', icon: <RocketOutlined /> },
+        { label: 'Бизнес', value: 'business', icon: <TrophyOutlined /> },
+        { label: 'История', value: 'history', icon: <BookOutlined /> },
+        { label: 'Роман', value: 'romance', icon: <HeartOutlined /> },
+        { label: 'Детские', value: 'kids', icon: <StarOutlined /> },
     ];
 
 
-    const fetchBooks = useCallback(async (pageNumber = 1, isFirstLoad = false) => {
+    const fetchBooks = useCallback(async (pageNumber = 1) => {
         setLoading(true);
         try {
             const res = await axios.get('https://www.googleapis.com/books/v1/volumes', {
@@ -48,12 +57,7 @@ const Books = () => {
             const newBooks = res.data.items || [];
             const totalItems = res.data.totalItems || 0;
 
-            if (isFirstLoad) {
-                setBooks(newBooks);
-            } else {
-                setBooks(prev => [...prev, ...newBooks]);
-            }
-
+            setBooks(newBooks);
             setTotal(totalItems);
             setPage(pageNumber);
         } catch (err) {
@@ -64,37 +68,36 @@ const Books = () => {
         }
     }, [finalQuery]);
 
-    const sortedBooks = [...books].sort((a, b) => {
-        const va = a.volumeInfo;
-        const vb = b.volumeInfo;
+    const sortedBooks = useMemo(() => {
+        return [...books].sort((a, b) => {
+            const va = a.volumeInfo;
+            const vb = b.volumeInfo;
 
-        if (sortType === 'title') {
-            return (va.title || '').localeCompare(vb.title || '');
-        };
-        if (sortType === 'date') {
-            return new Date(vb.publishedDate || '') - new Date(va.publishedDate || '');
-        };
-        if (sortType === 'price') {
-            const pa = a.saleInfo?.listPrice?.amount || 0;
-            const pb = b.saleInfo?.listPrice?.amount || 0;
-            return pa - pb;
-        };
-        return (0);
-    })
+            if (sortType === 'title') {
+                return (va.title || '').localeCompare(vb.title || '');
+            }
+            if (sortType === 'date') {
+                return new Date(vb.publishedDate || '') - new Date(va.publishedDate || '');
+            }
+            if (sortType === 'price') {
+                const pa = a.saleInfo?.listPrice?.amount || 0;
+                const pb = b.saleInfo?.listPrice?.amount || 0;
+                return pa - pb;
+            }
+            return 0; // По умолчанию без сортировки
+        });
+    }, [books, sortType]);
 
     useEffect(() => {
         setBooks([]);
         setPage(1);
-        fetchBooks(1, true);
+        fetchBooks(1);
     }, [querySearch, category, fetchBooks]);
 
-    const hasMore = books.length < total && books.length < 1000;
-
     return (
-        <div style={{ padding: '20px' }}>
-            <div>
-                <Navbar />
-                <Title level={2}>
+        <div className="books-page" style={{ padding: '20px' }}>
+            <div className="books-header">
+                <Title level={1}>
                     {querySearch
                         ? `Результаты поиска: "${querySearch}"`
                         : category
@@ -104,27 +107,18 @@ const Books = () => {
             </div>
 
             {loading && books.length === 0 ? (
-                <Spin size="large" />
+                <div className="books-loading">
+                    <Spin size="large" />
+                </div>
             ) : (
                 <>
-                    {hasMore && (
-                        <div style={{ marginBottom: 20 }}>
-                            <Select value={sortType} onChange={setSortType} style={{ width: 200 }}>
-                                <Option value="default">Без сортировки</Option>
-                                <Option value="title">По названию (А–Я)</Option>
-                                <Option value="date">По дате (сначала новые)</Option>
-                                <Option value="price">По цене (сначала дешёвые)</Option>
-                            </Select>
-                        </div>
-                    )}
                     <div className='category-section'>
-                        <Title level={3}>
-                            📚 Жанры
-                        </Title>
-                        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', height: 50, }}>
+                        <div className="category-buttons">
                             <Button
                                 type={!category && !querySearch ? 'primary' : 'default'}
                                 onClick={() => navigate('/books')}
+                                className="category-btn"
+                                icon={<HomeOutlined />}
                             >
                                 Все книги
                             </Button>
@@ -133,43 +127,58 @@ const Books = () => {
                                     onClick={() => navigate(`/books?category=${cat.value}`)}
                                     key={cat.value}
                                     type={category === cat.value ? 'primary' : 'default'}
+                                    className="category-btn"
+                                    icon={cat.icon}
                                 >
                                     {cat.label}
                                 </Button>
                             ))}
+                            <Select value={sortType} onChange={setSortType} style={{ width: 260 }} className="books-sort category-btn">
+                                <Option value="default">Без сортировки</Option>
+                                <Option value="title">По названию (А–Я)</Option>
+                                <Option value="date">По дате (сначала новые)</Option>
+                                <Option value="price">По цене (сначала дешёвые)</Option>
+                            </Select>
                         </div>
                     </div>
-                    <Row gutter={[16, 16]}>
-                        {sortedBooks.map((book) => {
-                            const volume = book.volumeInfo;
-                            return (
-                                <Col xs={24} sm={12} md={8} lg={4} xl={4} key={book.id}>
-                                    <Card
-                                        id={book.id}
-                                        title={volume.title}
-                                        authors={volume.authors}
-                                        image={volume.imageLinks?.thumbnail}
-                                        publishedDate={volume.publishedDate}
-                                        category={volume.categories?.[0]}
-                                        price={book.saleInfo?.listPrice?.amount}
-                                        oldPrice={book.saleInfo?.retailPrice?.amount}
-                                        currency={book.saleInfo?.listPrice?.currencyCode}
-                                        buyLink={book.saleInfo?.buyLink}
-                                    />
-                                </Col>
-                            );
-                        })}
-                    </Row>
-                    <div style={{ marginLeft: 525, marginTop: 30, marginBottom: 30 }}>
+                    <div className="books-grid">
+                        <Row gutter={[16, 16]}>
+                            {sortedBooks.map((book) => {
+                                const volume = book.volumeInfo;
+                                return (
+                                    <Col xs={24} sm={12} md={8} lg={6} xl={4.8} key={book.id}>
+                                        <div className="book-item">
+                                            <BookCard
+                                                id={book.id}
+                                                title={volume.title}
+                                                authors={volume.authors}
+                                                image={volume.imageLinks?.thumbnail}
+                                                publishedDate={volume.publishedDate}
+                                                category={volume.categories?.[0]}
+                                                price={book.saleInfo?.listPrice?.amount}
+                                                oldPrice={book.saleInfo?.retailPrice?.amount}
+                                                currency={book.saleInfo?.listPrice?.currencyCode}
+                                                buyLink={book.saleInfo?.buyLink}
+                                            />
+                                        </div>
+                                    </Col>
+                                );
+                            })}
+                        </Row>
+                    </div>
+                    
+                    <div className="books-pagination">
                         <Pagination
                             current={page}
                             pageSize={maxResults}
                             total={Math.min(total, 1000)}
                             onChange={(newPage) => {
-                                fetchBooks(newPage, true);
-                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                                fetchBooks(newPage);
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
                             showSizeChanger={false}
+                            showQuickJumper
+                            showTotal={(total, range) => `${range[0]}-${range[1]} из ${total} книг`}
                         />
                     </div>
                 </>

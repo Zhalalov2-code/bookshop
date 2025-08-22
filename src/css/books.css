@@ -1,0 +1,490 @@
+/* Стили для страницы книг */
+.books-page {
+  animation: fadeIn 0.6s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.books-header {
+  animation: fadeInUp 0.8s ease-out;
+  margin-bottom: 30px;
+  text-align: center;
+  width: 100%;
+}
+
+.books-header .ant-typography {
+  margin-bottom: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.books-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  width: 100%;
+}
+
+
+
+/* Простая сортировка */
+.books-sort {
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  transition: all 0.3s ease;
+  height: 36px;
+  background: white;
+  color: #666;
+  font-weight: 500;
+}
+
+.books-sort:hover {
+  border-color: #1890ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.books-sort .ant-select-selector {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  height: 36px !important;
+  display: flex;
+  align-items: center;
+}
+
+.books-sort.ant-select-focused .ant-select-selector {
+  box-shadow: none !important;
+}
+
+.books-sort.ant-select-focused {
+  border-color: #1890ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.2);
+}
+
+/* Стили для выпадающего списка */
+.books-sort .ant-select-dropdown {
+  min-width: 280px !important;
+  max-width: 350px !important;
+}
+
+.books-sort .ant-select-item {
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+}
+
+.books-sort .ant-select-item-option-content {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+/* Простая секция жанров */
+.category-section {
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+  margin-bottom: 30px;
+  text-align: center;
+  width: 100%;
+}
+
+.category-section .ant-typography {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Простые кнопки жанров в один ряд */
+.category-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 10px 0;
+  max-width: 100%;
+}
+
+.category-btn {
+  animation: fadeInUp 0.8s ease-out 0.8s both;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 8px 16px;
+  height: 36px;
+  border: 1px solid #d9d9d9;
+  background: white;
+  color: #666;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.category-btn .anticon {
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+  transform: translateY(-1px);
+  border-color: #1890ff;
+  color: #1890ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-btn:hover .anticon {
+  color: #1890ff;
+}
+
+.category-btn.ant-btn-primary {
+  background: #1890ff;
+  border-color: #1890ff;
+  color: white;
+}
+
+.category-btn.ant-btn-primary .anticon {
+  color: white;
+}
+
+.category-btn.ant-btn-primary:hover {
+  background: #40a9ff;
+  border-color: #40a9ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.2);
+}
+
+.category-btn.ant-btn-primary:hover .anticon {
+  color: white;
+}
+
+.books-grid {
+  animation: fadeInUp 0.8s ease-out 1s both;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.book-item {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+
+
+/* Улучшенная сетка для карточек */
+.books-grid .ant-row {
+  justify-content: flex-start;
+}
+
+.books-grid .ant-col {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Отличная адаптивность сетки для всех устройств */
+
+/* Большие десктопы (1400px+) - 5 карточек в ряд */
+@media (min-width: 1400px) {
+  .books-grid .ant-col-xl-4 {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
+
+/* Стандартные десктопы (1200px - 1399px) - 5 карточек в ряд */
+@media (max-width: 1399px) and (min-width: 1200px) {
+  .books-grid .ant-col-lg-6 {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
+
+/* Средние экраны (992px - 1199px) - 4 карточки в ряд */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .books-grid .ant-col-md-8 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+/* Планшеты (768px - 991px) - 3 карточки в ряд */
+@media (max-width: 991px) and (min-width: 768px) {
+  .books-grid .ant-col-sm-12 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+  
+  .books-page {
+    padding: 20px !important;
+  }
+  
+  .category-buttons {
+    gap: 10px;
+  }
+  
+  .category-btn {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+}
+
+/* Большие мобильные (576px - 767px) - 2 карточки в ряд */
+@media (max-width: 767px) and (min-width: 576px) {
+  .books-grid .ant-col-xs-24 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  .books-page {
+    padding: 15px !important;
+  }
+  
+  .books-header {
+    margin-bottom: 20px;
+  }
+  
+  .books-header .ant-typography {
+    font-size: 20px !important;
+  }
+  
+  .category-section {
+    margin-bottom: 20px;
+  }
+  
+  .category-buttons {
+    gap: 8px;
+    min-height: 40px;
+  }
+  
+  .category-btn {
+    font-size: 12px;
+    padding: 5px 10px;
+    height: 32px;
+  }
+  
+  .books-controls {
+    margin-bottom: 20px;
+  }
+  
+  .books-sort {
+    width: 180px !important;
+  }
+  
+
+}
+
+/* Средние мобильные (480px - 575px) - 2 карточки в ряд */
+@media (max-width: 575px) and (min-width: 480px) {
+  .books-grid .ant-col-xs-24 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  .books-page {
+    padding: 12px !important;
+  }
+  
+  .books-header .ant-typography {
+    font-size: 18px !important;
+  }
+  
+  .category-buttons {
+    gap: 6px;
+  }
+  
+  .category-btn {
+    font-size: 11px;
+    padding: 4px 8px;
+    height: 28px;
+  }
+  
+  .books-sort {
+    width: 160px !important;
+  }
+  
+  .book-item {
+    margin-bottom: 15px;
+  }
+}
+
+/* Маленькие мобильные (до 479px) - 1 карточка в ряд */
+@media (max-width: 479px) {
+  .books-grid .ant-col-xs-24 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .books-page {
+    padding: 10px !important;
+  }
+  
+  .books-header .ant-typography {
+    font-size: 16px !important;
+  }
+  
+  .category-buttons {
+    gap: 5px;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .category-btn {
+    font-size: 11px;
+    padding: 4px 8px;
+    height: 26px;
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .books-sort {
+    width: 140px !important;
+  }
+  
+  .book-item {
+    margin-bottom: 12px;
+  }
+  
+
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-width: 767px) and (orientation: landscape) {
+  .books-grid .ant-col-xs-24 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+  
+  .books-page {
+    padding: 10px !important;
+  }
+  
+  .category-buttons {
+    flex-direction: row;
+    gap: 8px;
+  }
+  
+  .category-btn {
+    width: auto;
+    max-width: none;
+  }
+}
+
+/* Улучшения для очень больших экранов */
+@media (min-width: 1600px) {
+  .books-grid .ant-col-xl-4 {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+  
+  .books-page {
+    padding: 30px !important;
+  }
+  
+  .books-header .ant-typography {
+    font-size: 28px !important;
+  }
+}
+
+/* Улучшения для очень маленьких экранов */
+@media (max-width: 360px) {
+  .books-page {
+    padding: 8px !important;
+  }
+  
+  .books-header .ant-typography {
+    font-size: 14px !important;
+  }
+  
+  .category-btn {
+    font-size: 10px;
+    padding: 3px 6px;
+    height: 24px;
+  }
+  
+  .books-sort {
+    width: 120px !important;
+  }
+}
+
+/* Улучшенная пагинация */
+.books-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.books-pagination .ant-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.books-pagination .ant-pagination-item {
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  transition: all 0.3s ease;
+}
+
+.books-pagination .ant-pagination-item:hover {
+  border-color: #1890ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.books-pagination .ant-pagination-item-active {
+  border-color: #1890ff;
+  color: white;
+}
+
+.books-pagination .ant-pagination-prev,
+.books-pagination .ant-pagination-next {
+  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  transition: all 0.3s ease;
+}
+
+.books-pagination .ant-pagination-prev:hover,
+.books-pagination .ant-pagination-next:hover {
+  border-color: #1890ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.books-pagination .ant-pagination-options {
+  margin-left: 16px;
+}
+
+.books-pagination .ant-pagination-options-quick-jumper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.books-pagination .ant-pagination-options-quick-jumper input {
+  border-radius: 4px;
+  border: 1px solid #d9d9d9;
+  padding: 4px 8px;
+  width: 60px;
+}
+
+.books-pagination .ant-pagination-total-text {
+  color: #666;
+  font-size: 14px;
+}

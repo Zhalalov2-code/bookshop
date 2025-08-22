@@ -1,25 +1,100 @@
 .body-login{
-    padding: 20px;
+    padding: 30px;
+    animation: fadeIn 0.6s ease-out;
 }
 
 .content-section{
     max-width: 400px;
     margin: 50px auto;
+    padding: 30px;
+    transition: transform 0.3s ease;
+}
+
+.content-section:hover {
+    transform: translateY(-5px);
 }
 
 .title-login{
     text-align: center;
+    animation: fadeInUp 0.8s ease-out;
 }
 
 .img-login{
     width: 200px;
-    margin-left: 100px;
+    margin: 0 auto;
+    display: block;
+    transition: transform 0.3s ease;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.img-login:hover {
+    transform: scale(1.05);
 }
 
 .link{
     text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .link:hover{
     color: red;
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-section .ant-input,
+.content-section .ant-input-password {
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #d9d9d9;
+    font-size: 14px;
+}
+
+.content-section .ant-input:focus,
+.content-section .ant-input-password:focus {
+    transform: translateY(-2px);
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.content-section .ant-input-password .ant-input {
+    height: 38px;
+    border: none;
+    padding: 0;
+    background: transparent;
+}
+
+.content-section .ant-input-password .ant-input:focus {
+    box-shadow: none;
+    transform: none;
+}
+
+.content-section .ant-btn {
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.content-section .ant-btn:hover {
+    transform: translateY(-2px);
 }

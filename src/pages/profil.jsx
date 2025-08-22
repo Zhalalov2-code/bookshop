@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../components/authContext';
 import axios from 'axios';
 import { Input, Button, Typography, message, Avatar, Spin, Modal } from 'antd';
-import Navbar from '../components/navbar';
 import '../css/profil.css';
 import { signOut, deleteUser } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
@@ -75,7 +74,10 @@ function Profil() {
     const handleModalOk = async () => {
         try {
             const currentUser = auth.currentUser;
-            if (!currentUser) return;
+            if (!currentUser) {
+                message.error('Пользователь не найден');
+                return;
+            }
 
             if (profile?.id) {
                 await axios.delete(`https://683f4d771cd60dca33def0f9.mockapi.io/users/${profile.id}`);
@@ -86,8 +88,12 @@ function Profil() {
             setIsModalVisible(false);
             navigate('/login');
         } catch (err) {
-            console.error(err);
-            message.error('Не удалось удалить аккаунт. Возможно, требуется повторный вход.');
+            console.error('Ошибка при удалении аккаунта:', err);
+            if (err.code === 'auth/requires-recent-login') {
+                message.error('Для удаления аккаунта требуется повторный вход');
+            } else {
+                message.error('Не удалось удалить аккаунт');
+            }
         }
     };
 
@@ -95,7 +101,6 @@ function Profil() {
 
     return (
         <div className="body-profil">
-            <Navbar />
             <div className="profil-content">
                 <Title level={2}>Профиль пользователя</Title>
 

@@ -22,7 +22,6 @@ const Navbar = () => {
             : { label: "Вход", key: "/login", icon: <UserOutlined /> }
     ];
 
-
     const handleMenuClick = (e) => {
         navigate(e.key);
     };
@@ -32,7 +31,6 @@ const Navbar = () => {
             navigate(`/books?query=${encodeURIComponent(value)}`);
         }
     };
-
 
     return (
         <Header style={{ display: 'flex', alignItems: 'center', background: '#fff', padding: '0 20px' }}>

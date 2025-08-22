@@ -4,7 +4,6 @@ import { auth, signInWithGooglePopup } from '../firebase/firebase';
 import { Input, Button, Typography, message } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import Navbar from '../components/navbar';
 import Embel from '../img/embel.png'
 import '../css/login.css'
 import { GoogleOutlined } from '@ant-design/icons';
@@ -38,8 +37,7 @@ const Login = () => {
             navigate('/profil');
         } catch (err) {
             console.error(err);
-            alert('Неправильный пароль или логин')
-            message.error('Ошибка входа: ' + err.message);
+            message.error('Неправильный пароль или логин');
         }
     };
 
@@ -48,7 +46,7 @@ const Login = () => {
             const result = await signInWithGooglePopup();
             const firebaseUser = result.user;
 
-            const response = await axios.get(`https://683f4d771cd60dca33def0f9.mockapi.io/users?search=${firebaseUser.uid}&searchBy=uid`);
+            const response = await axios.get(`https://683f4d771cd60dca33def0f9.mockapi.io/users?uid=${firebaseUser.uid}`);
             const users = response.data;
 
             if (!users || users.length === 0) {
@@ -71,9 +69,6 @@ const Login = () => {
 
     return (
         <div className='body-login'>
-            <div>
-                <Navbar />
-            </div>
             <div className='content-section'>
                 <div>
                     <Title className='title-login' level={2}>Вход в аккаунт</Title>

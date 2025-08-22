@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Typography, Button, Spin, Alert, notification } from 'antd';
 import { ShoppingCartOutlined, ShoppingOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import Navbar from '../components/navbar';
 import { useAuth } from '../components/authContext';
 import { addToCart, getUserCart } from '../api/cartApi';
 import '../css/details.css';
@@ -25,8 +24,12 @@ const BookDetails = () => {
                 const res = await axios.get(`https://www.googleapis.com/books/v1/volumes/${id}`);
                 setBook(res.data);
             } catch (err) {
-                console.error(err);
-                setError('Не удалось загрузить данные книги');
+                console.error('Ошибка при загрузке книги:', err);
+                if (err.response?.status === 404) {
+                    setError('Книга не найдена');
+                } else {
+                    setError('Не удалось загрузить данные книги');
+                }
             } finally {
                 setLoading(false);
             }
@@ -40,10 +43,11 @@ const BookDetails = () => {
             if (user && book?.id) {
                 try {
                     const cart = await getUserCart(user.uid);
-                    const exists = cart.some(item => item.id === book.id);
+                    const exists = cart.some(item => item.bookId === book.id || item.id === book.id);
                     setInCart(exists);
                 } catch (err) {
                     console.error('Ошибка при проверке корзины:', err);
+                    setInCart(false);
                 }
             }
         };
@@ -61,7 +65,10 @@ const BookDetails = () => {
         }
 
         const item = {
-            id, title,
+            id, 
+            title,
+            price: book.saleInfo?.retailPrice?.amount || 0,
+            image: book.volumeInfo?.imageLinks?.thumbnail || '',
             userId: user.uid,
         };
 
@@ -111,19 +118,14 @@ const BookDetails = () => {
 
     return (
         <div className="body-details">
-            <Navbar />
-
-            <div style={{ maxWidth: 800, margin: '0 auto' }}>
-                <Button
-                    type="link"
-                    icon={<ArrowLeftOutlined />}
-                    onClick={() => navigate(-1)}
-                    style={{ margin: '20px 0' }}
-                >
-                    Назад
-                </Button>
-
-                <Card className="card-details">
+            <Card className="card-details">
+            <Button
+                type="link"
+                icon={<ArrowLeftOutlined />}
+                onClick={() => navigate(-1)}
+            >
+                Назад
+            </Button>
                     <img
                         src={imageLinks?.thumbnail || ''}
                         alt={title}
@@ -169,7 +171,6 @@ const BookDetails = () => {
                         {inCart ? 'Уже в корзине' : 'В корзину'}
                     </Button>
                 </Card>
-            </div>
         </div>
     );
 };

@@ -1,4 +1,3 @@
-import Navbar from '../components/navbar';
 import '../css/basket.css';
 import { Typography, Button, message, Spin } from 'antd';
 import { getCart, removeFromCart } from '../api/cartApi';
@@ -18,7 +17,8 @@ function Basket() {
             setLoading(true);
             const data = await getCart(user.uid);
             setCart(data);
-        } catch {
+        } catch (error) {
+            console.error('Ошибка при загрузке корзины:', error);
             message.error('Ошибка при загрузке корзины');
         } finally {
             setLoading(false);
@@ -30,7 +30,8 @@ function Basket() {
             await removeFromCart(id);
             message.success('Удалено');
             fetchCart();
-        } catch {
+        } catch (error) {
+            console.error('Ошибка при удалении:', error);
             message.error('Ошибка при удалении');
         }
     };
@@ -43,12 +44,11 @@ function Basket() {
 
     return (
         <div className='body-basket'>
-            <Navbar />
             <Title level={2}>🛒 Ваша корзина</Title>
             {loading ? (
                 <Spin className='spin' size="large" tip="Загрузка..." />
             ) : cart.length === 0 ? (
-                <Title level={4}>Корзина пуста</Title>
+                <Title level={4}>Пустой</Title>
             ) : (
                 <>
                     {cart.map(item => (

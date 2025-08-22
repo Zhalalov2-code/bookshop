@@ -22,8 +22,7 @@ export const removeFromCart = async (id) => {
     return await axios.delete(`${API_URL}/${id}`);
 };
 
-
 export const getUserCart = async (userId) => {
-    const res = await axios.get(`https://your-api-url/cart?userId=${userId}`);
-    return res.data;
+    const response = await axios.get(API_URL);
+    return response.data.filter(item => item.userId === userId);
 };

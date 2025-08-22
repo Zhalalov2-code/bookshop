@@ -22,7 +22,7 @@ const BookCard = ({ id, title, authors, image, publishedDate, category, price, o
         }
 
         const item = {
-            id, title, image, price,
+            id, title, image, price: price || 0,
             userId: user.uid,
         };
 
@@ -51,7 +51,7 @@ const BookCard = ({ id, title, authors, image, publishedDate, category, price, o
         }>
             {isDiscount && (
                 <div className="book-card-discount">
-                    -{Math.round(100 - (price / oldPrice) * 100)}%
+                    -{Math.round(100 - ((price || 0) / (oldPrice || 1)) * 100)}%
                 </div>
             )}
             <div className="book-card-title">{title}</div>
@@ -61,7 +61,7 @@ const BookCard = ({ id, title, authors, image, publishedDate, category, price, o
             <Text className="book-card-meta">📅 {publishedDate || '—'}</Text><br />
             <Text className="book-card-meta">🏷️ {category || 'Не указано'}</Text>
             <div className="book-card-price">
-                {isDiscount && <Text delete>{oldPrice.toFixed(2)} {currency}</Text>}
+                {isDiscount && <Text delete>{(oldPrice || 0).toFixed(2)} {currency}</Text>}
                 <Text strong>{price ? `${price.toFixed(2)} ${currency}` : 'Бесплатно'}</Text>
             </div>
             {buyLink && (

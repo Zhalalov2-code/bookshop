@@ -22,6 +22,25 @@ const Register = () => {
             return;
         }
 
+        // Валидация email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            message.error('Введите корректный email');
+            return;
+        }
+
+        // Валидация пароля
+        if (password.length < 6) {
+            message.error('Пароль должен содержать минимум 6 символов');
+            return;
+        }
+
+        // Валидация телефона
+        if (phone.length < 10) {
+            message.error('Введите корректный номер телефона');
+            return;
+        }
+
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const firebaseUser = userCredential.user;
@@ -37,8 +56,14 @@ const Register = () => {
             message.success('Регистрация прошла успешно');
             navigate('/profil');
         } catch (err) {
-            console.error(err);
-            message.error('Ошибка при регистрации');
+            console.error('Ошибка при регистрации:', err);
+            if (err.code === 'auth/email-already-in-use') {
+                message.error('Пользователь с таким email уже существует');
+            } else if (err.code === 'auth/weak-password') {
+                message.error('Пароль слишком слабый');
+            } else {
+                message.error('Ошибка при регистрации');
+            }
         }
     };
 
